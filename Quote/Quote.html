@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 80%;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #28a745;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .quote {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Get Your Quote</h1>
+        <form id="quoteForm">
+            <input type="text" id="name1" placeholder="Enter first name" required><br>
+            <input type="text" id="name2" placeholder="Enter second name" required><br>
+            <button type="submit">Generate Quote</button>
+        </form>
+        <div class="quote" id="quoteDisplay"></div>
+    </div>
+
+    <script>
+        document.getElementById('quoteForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name1 = document.getElementById('name1').value;
+            const name2 = document.getElementById('name2').value;
+            
+            fetch(`/generate-quote?name1=${encodeURIComponent(name1)}&name2=${encodeURIComponent(name2)}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('quoteDisplay').textContent = data.quote;
+                })
+                .catch(error => {
+                    document.getElementById('quoteDisplay').textContent = "An error occurred. Please try again.";
+                });
+        });
+    </script>
+</body>
+</html>
